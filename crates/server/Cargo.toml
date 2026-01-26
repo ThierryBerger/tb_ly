@@ -1,0 +1,42 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "generate_cert_self_signed"
+path = "generate_cert_self_signed.rs"
+
+[dependencies]
+lightyear = { workspace = true, features = [
+    "netcode",
+    "server",
+    "webtransport",
+    "avian2d",
+    "interpolation",
+    "prediction",
+    "replication",
+    "std",
+    "leafwing",
+] }
+leafwing-input-manager = { workspace = true }
+avian2d = { workspace = true }
+serde = "1.0"
+serde_json = "1.0"
+bevy = { version = "0.17", default-features = false, features = [
+    "bevy_asset",
+    "bevy_scene",
+    "bevy_state",
+] }
+shared = { path = "../shared" }
+tracing = "0.1"
+async-compat = "0.2"
+aeronet_webtransport = "0.18"
+futures = "*"
+tokio = { version = "1", features = ["macros", "rt"] }
+#
+# for auth
+rand = { workspace = true }
+axum = "0.8"
+#
+#

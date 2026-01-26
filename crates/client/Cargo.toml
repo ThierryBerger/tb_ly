@@ -1,0 +1,43 @@
+[package]
+name = "client"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+debug = ["lightyear/debug", "bevy/bevy_dev_tools"]
+
+[dependencies]
+shared = { path = "../shared" }
+
+bevy-inspector-egui = { version = "0.35", default-features = false, features = [
+    #"bevy_pbr",
+    "bevy_image",
+    "bevy_render",
+    "egui_open_url",
+] }
+bevy = "0.17"
+serde = "1.0"
+serde_json = "1.0"
+lightyear = { workspace = true, features = [
+    "netcode",
+    "client",
+    "webtransport",
+    "avian2d",
+    "interpolation",
+    "prediction",
+    "replication",
+    "std",
+    "leafwing",
+] }
+lightyear_frame_interpolation = { workspace = true }
+leafwing-input-manager = { workspace = true }
+avian2d = { workspace = true }
+getrandom = { version = "0.3", features = [
+    "wasm_js", # feature 'js' is required for wasm, see https://github.com/rust-random/getrandom?tab=readme-ov-file#webassembly-support
+] }
+getrandom_02 = { version = "0.2", features = ["js"], package = "getrandom" }
+ehttp = { version = "0.6", features = ["native-async"] }
+bevy_simple_prefs = "0.7"
+
+[package.metadata.bevy_cli.web]
+rustflags = ["--cfg", "getrandom_backend=\"wasm_js\""]

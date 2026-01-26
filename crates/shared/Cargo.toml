@@ -1,0 +1,22 @@
+[package]
+name = "shared"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+lightyear = { workspace = true, features = ["input_native", "avian2d"] }
+bevy = { version = "0.17", default-features = false, features = [
+    "serialize",
+    "bevy_log",
+    "bevy_color",
+] }
+avian2d = { workspace = true, features = [
+    "2d",
+    "f32",
+    "parry-f32",
+    "parallel",
+    "serialize",
+] }
+tracing = "*"
+leafwing-input-manager = { workspace = true }
