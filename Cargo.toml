@@ -4,8 +4,11 @@ resolver = "2"
 
 [workspace.dependencies]
 #lightyear = { git = "https://github.com/cBournhonesque/lightyear.git", rev = "bd7c5e376d4904307ebc016be16b73391d9ad8e0" }
-lightyear = { path = "../lightyear/lightyear", default-features = false }
-lightyear_frame_interpolation = { path = "../lightyear/lightyear_frame_interpolation" }
+lightyear = { version = "0.26", default-features = false }
+lightyear_frame_interpolation = "0.26"
+# lightyear = { path = "../lightyear/lightyear", default-features = false }
+# lightyear_frame_interpolation = { path = "../lightyear/lightyear_frame_interpolation" }
 rand = "0.9"
-avian2d = "0.4"
-leafwing-input-manager = "0.19.0"
+avian2d = "0.5"
+leafwing-input-manager = "0.20"
+bevy = { version = "0.18", default-features = false }

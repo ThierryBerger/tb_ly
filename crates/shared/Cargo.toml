@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 lightyear = { workspace = true, features = ["input_native", "avian2d"] }
-bevy = { version = "0.17", default-features = false, features = [
+bevy = { workspace = true, default-features = false, features = [
     "serialize",
     "bevy_log",
     "bevy_color",

@@ -17,6 +17,7 @@ pub fn plugin(app: &mut App) {
         replication_mode: AvianReplicationMode::Position,
         ..default()
     });
+    app.init_resource::<StaticTransformOptimizations>();
     app.add_plugins(
         PhysicsPlugins::default()
             .build()

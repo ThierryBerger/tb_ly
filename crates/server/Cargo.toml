@@ -23,7 +23,7 @@ leafwing-input-manager = { workspace = true }
 avian2d = { workspace = true }
 serde = "1.0"
 serde_json = "1.0"
-bevy = { version = "0.17", default-features = false, features = [
+bevy = { workspace = true, default-features = false, features = [
     "bevy_asset",
     "bevy_scene",
     "bevy_state",
@@ -31,7 +31,7 @@ bevy = { version = "0.17", default-features = false, features = [
 shared = { path = "../shared" }
 tracing = "0.1"
 async-compat = "0.2"
-aeronet_webtransport = "0.18"
+aeronet_webtransport = "0.19"
 futures = "*"
 tokio = { version = "1", features = ["macros", "rt"] }
 #

@@ -4,18 +4,24 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-debug = ["lightyear/debug", "bevy/bevy_dev_tools"]
+debug = [
+    "dep:bevy-inspector-egui",
+    "lightyear/debug",
+    "bevy/bevy_dev_tools",
+    # Because bevy-inspector-egui actually depends on it
+    "bevy/bevy_mikktspace",
+]
 
 [dependencies]
 shared = { path = "../shared" }
 
-bevy-inspector-egui = { version = "0.35", default-features = false, features = [
+bevy-inspector-egui = { version = "0.36", optional = true, default-features = false, features = [
     #"bevy_pbr",
     "bevy_image",
     "bevy_render",
     "egui_open_url",
 ] }
-bevy = "0.17"
+bevy = { workspace = true, default-features = true, features = ["bevy_winit"] }
 serde = "1.0"
 serde_json = "1.0"
 lightyear = { workspace = true, features = [
@@ -37,7 +43,7 @@ getrandom = { version = "0.3", features = [
 ] }
 getrandom_02 = { version = "0.2", features = ["js"], package = "getrandom" }
 ehttp = { version = "0.6", features = ["native-async"] }
-bevy_simple_prefs = "0.7"
+bevy_simple_prefs = "0.8"
 
 [package.metadata.bevy_cli.web]
 rustflags = ["--cfg", "getrandom_backend=\"wasm_js\""]
