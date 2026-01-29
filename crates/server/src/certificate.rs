@@ -20,6 +20,7 @@ pub enum WebTransportCertificateSettings {
 impl Default for WebTransportCertificateSettings {
     fn default() -> Self {
         let sans = vec![
+            "0.0.0.0".to_string(),
             "localhost".to_string(),
             "127.0.0.1".to_string(),
             "::1".to_string(),

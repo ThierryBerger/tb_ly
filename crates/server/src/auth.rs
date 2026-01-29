@@ -9,7 +9,7 @@
 extern crate alloc;
 use alloc::sync::Arc;
 use async_compat::Compat;
-use axum::http::StatusCode;
+use axum::http::{Method, StatusCode};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
@@ -20,6 +20,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use shared::auth::{AuthPayload, Key, NewClientPayload, TokenResponse};
 use std::sync::{LazyLock, RwLock};
+use tower_http::cors::{Any, CorsLayer};
 
 use bevy::platform::collections::{HashMap, HashSet};
 use bevy::prelude::*;
@@ -221,9 +222,16 @@ fn start_netcode_authentication_task(
 ) {
     IoTaskPool::get()
         .spawn(Compat::new(async move {
+            let cors = CorsLayer::new()
+                // allow `GET` and `POST` when accessing the resource
+                .allow_methods([Method::GET, Method::POST, Method::OPTIONS])
+                // allow requests from any origin
+                .allow_origin(Any)
+                .allow_headers(Any);
             let app = Router::new()
                 .route("/create_client", post(create_client))
                 .route("/connect_client", post(connect_client))
+                .layer(cors)
                 .layer(axum::extract::Extension(client_ids))
                 .layer(axum::extract::Extension(client_secrets))
                 .layer(axum::extract::Extension(GameServerAddr(game_server_addr)));

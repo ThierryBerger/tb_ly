@@ -6,7 +6,7 @@ use lightyear::netcode::PRIVATE_KEY_BYTES;
 use serde::{Deserialize, Serialize};
 
 // Define a shared port for the authentication backend
-pub const AUTH_BACKEND_PORT: u16 = 4000;
+pub const AUTH_BACKEND_PORT: u16 = 4100;
 
 pub const AUTH_BACKEND_ADDRESS: SocketAddr =
     SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, AUTH_BACKEND_PORT));

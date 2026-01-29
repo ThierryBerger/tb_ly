@@ -30,7 +30,7 @@ pub fn plugin(app: &mut App) {
 }
 
 pub(crate) fn init_walls(mut commands: Commands) {
-    //map::create_map_3(commands.reborrow());
+    map::create_map_3(commands.reborrow());
 }
 
 // Wall
