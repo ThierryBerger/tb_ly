@@ -9,6 +9,11 @@ lightyear_frame_interpolation = "0.26"
 # lightyear = { path = "../lightyear/lightyear", default-features = false }
 # lightyear_frame_interpolation = { path = "../lightyear/lightyear_frame_interpolation" }
 rand = "0.9"
-avian2d = "0.5"
+avian2d = { version = "0.5", default-features = false, features = [
+    "parallel",
+    "debug-plugin",
+    "parry-f32",
+    "2d",
+] }
 leafwing-input-manager = "0.20"
 bevy = { version = "0.18", default-features = false }

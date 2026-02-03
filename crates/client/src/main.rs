@@ -24,8 +24,9 @@ use lightyear::link::RecvLinkConditioner;
 use lightyear::prelude::client::InputDelayConfig;
 use lightyear::prelude::*;
 use shared::SharedPlugin;
-use shared::auth::TokenResponse;
-use shared::settings::{CLIENT_PORT, FIXED_TIMESTEP_HZ, SERVER_ADDR, SHARED_SETTINGS};
+use shared::auth::{AUTH_BACKEND_ADDRESS, AUTH_BACKEND_PORT, TokenResponse};
+use shared::settings::{CLIENT_PORT, FIXED_TIMESTEP_HZ, SERVER_ADDR, SERVER_PORT, SHARED_SETTINGS};
+use std::net::ToSocketAddrs;
 
 use crate::auth::AuthClientPlugin;
 use crate::client::ExampleClientPlugin;
@@ -54,14 +55,27 @@ fn main() {
     ));
     app.add_plugins(SharedPlugin);
     app.add_plugins(AuthClientPlugin {
-        auth_backend_address: shared::auth::AUTH_BACKEND_ADDRESS,
+        // auth_backend_address: (AUTH_BACKEND_ADDRESS, AUTH_BACKEND_PORT)
+        //     .to_socket_addrs()
+        //     .unwrap()
+        //     .collect::<Vec<_>>()[0],
+        auth_backend_address: "213.188.212.111:4100".parse().unwrap(),
+        // auth_backend_address: ("https://tb-ly.fly.dev", 80)
+        //     .to_socket_addrs()
+        //     .unwrap()
+        //     .collect::<Vec<_>>()[0],
     });
     app.add_plugins(PrefsPlugin::<MyPrefs>::default());
     app.world_mut()
         .spawn(ExampleClient {
             client_id: 0,
             client_port: CLIENT_PORT,
-            server_addr: SERVER_ADDR,
+
+            server_addr: "213.188.212.111:5888".parse().unwrap(),
+            // server_addr: (SERVER_ADDR, SERVER_PORT)
+            //     .to_socket_addrs()
+            //     .unwrap()
+            //     .collect::<Vec<_>>()[0],
             conditioner: Some(RecvLinkConditioner::new(LinkConditionerConfig {
                 incoming_latency: Duration::from_secs_f32(0.15),
                 incoming_jitter: Duration::from_secs_f32(0.1),

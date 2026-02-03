@@ -8,8 +8,7 @@ use serde::{Deserialize, Serialize};
 // Define a shared port for the authentication backend
 pub const AUTH_BACKEND_PORT: u16 = 4100;
 
-pub const AUTH_BACKEND_ADDRESS: SocketAddr =
-    SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, AUTH_BACKEND_PORT));
+pub const AUTH_BACKEND_ADDRESS: &str = "tb-ly.fly.dev";
 
 /// A 32-byte array, used as a key for encrypting and decrypting packets and connect tokens.
 pub type Key = [u8; PRIVATE_KEY_BYTES];

@@ -1,0 +1,37 @@
+# fly.toml app configuration file generated for tb-ly on 2026-01-30T11:12:25+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'tb-ly'
+primary_region = 'cdg'
+
+[build]
+
+[[services]]
+protocol = "tcp"
+internal_port = 4100
+
+[[services.ports]]
+port = 4100
+handlers = ["http"]
+
+[[services.ports]]
+port = 443
+handlers = ["tls", "http"]
+
+# -----------------------
+# WebTransport (UDP)
+# -----------------------
+[[services]]
+protocol = "udp"
+internal_port = 5888
+force_https = true
+
+[[services.ports]]
+port = 5888
+
+[[vm]]
+memory = '1gb'
+cpus = 1
+memory_mb = 1024

@@ -5,7 +5,7 @@ pub const FIXED_TIMESTEP_HZ: f64 = 64.0;
 pub const SERVER_PORT: u16 = 5888;
 /// 0 means that the OS will assign any available port
 pub const CLIENT_PORT: u16 = 0;
-pub const SERVER_ADDR: SocketAddr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), SERVER_PORT);
+pub const SERVER_ADDR: &str = "tb-ly.fly.dev";
 pub const SHARED_SETTINGS: SharedSettings = SharedSettings { protocol_id: 0 };
 
 pub const SEND_INTERVAL: Duration = Duration::from_millis(100);

@@ -52,8 +52,8 @@ impl ExampleServer {
                 LocalAddr(server_addr),
                 WebTransportServerIo {
                     certificate: (&WebTransportCertificateSettings::FromFile {
-                        cert: "../../certificates/cert.pem".to_string(),
-                        key: "../../certificates/key.pem".to_string(),
+                        cert: "certificates/cert.pem".to_string(),
+                        key: "certificates/key.pem".to_string(),
                     })
                         .into(),
                 },
