@@ -21,8 +21,8 @@ use core::time::Duration;
 use game::GameServerPlugin;
 use lightyear::prelude::server::ServerPlugins;
 use shared::SharedPlugin;
-use shared::auth::{AUTH_BACKEND_ADDRESS, AUTH_BACKEND_PORT};
-use shared::settings::{FIXED_TIMESTEP_HZ, SERVER_ADDR, SERVER_PORT, SHARED_SETTINGS};
+use shared::auth::AUTH_BACKEND_PORT;
+use shared::settings::{FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR, SERVER_PORT, SHARED_SETTINGS};
 use std::net::ToSocketAddrs;
 use tracing::Level;
 
@@ -44,14 +44,7 @@ fn main() {
 
     app.add_plugins(GameServerPlugin);
     app.add_plugins(auth::AuthServerPlugin {
-        game_server_addr: (SERVER_ADDR, SERVER_PORT)
-            .to_socket_addrs()
-            .unwrap()
-            .collect::<Vec<_>>()[0],
-        game_server_addr_external: ("213.188.212.111", SERVER_PORT)
-            .to_socket_addrs()
-            .unwrap()
-            .collect::<Vec<_>>()[0],
+        game_server_addr_external: GAME_SERVER_ADDR.parse().unwrap(),
         auth_backend_addr: ("0.0.0.0", AUTH_BACKEND_PORT)
             .to_socket_addrs()
             .unwrap()

@@ -41,7 +41,6 @@ pub static PRIVATE_KEY: LazyLock<Key> = LazyLock::new(|| {
 });
 
 pub struct AuthServerPlugin {
-    pub game_server_addr: SocketAddr,
     pub game_server_addr_external: SocketAddr,
     pub auth_backend_addr: SocketAddr,
 }
@@ -54,7 +53,6 @@ impl Plugin for AuthServerPlugin {
         let client_ids = Arc::new(RwLock::new(HashSet::default()));
         let client_secrets = Arc::new(RwLock::new(HashMap::default()));
         start_netcode_authentication_task(
-            self.game_server_addr,
             self.game_server_addr_external,
             self.auth_backend_addr,
             client_ids.clone(),
@@ -214,13 +212,11 @@ async fn connect_client(
 
 #[derive(Clone)]
 pub struct GameServerAddr {
-    pub internal: SocketAddr,
     pub external: SocketAddr,
 }
 
 /// Start a detached task that listens for incoming TCP connections and sends `ConnectToken`s to clients
 fn start_netcode_authentication_task(
-    game_server_addr: SocketAddr,
     game_server_addr_external: SocketAddr,
     auth_backend_addr: SocketAddr,
     client_ids: Arc<RwLock<HashSet<u64>>>,
@@ -241,7 +237,6 @@ fn start_netcode_authentication_task(
                 .layer(axum::extract::Extension(client_ids))
                 .layer(axum::extract::Extension(client_secrets))
                 .layer(axum::extract::Extension(GameServerAddr {
-                    internal: game_server_addr,
                     external: game_server_addr_external,
                 }));
 

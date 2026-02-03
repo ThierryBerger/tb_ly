@@ -3,6 +3,9 @@ name = "shared"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+local = []
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 lightyear = { workspace = true, features = ["input_native", "avian2d"] }

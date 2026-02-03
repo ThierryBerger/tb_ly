@@ -7,6 +7,9 @@ edition = "2024"
 name = "generate_cert_self_signed"
 path = "generate_cert_self_signed.rs"
 
+[features]
+local = ["shared/local"]
+
 [dependencies]
 lightyear = { workspace = true, features = [
     "netcode",
