@@ -45,22 +45,7 @@ impl ExampleClient {
                 Name::from("Client"),
             ));
 
-            let certificate_digest = {
-                const CERT_DIGEST: Option<&'static str> = option_env!("CERT_DIGEST");
-                match CERT_DIGEST {
-                    Some(val) => val.to_string(),
-                    None => {
-                        #[cfg(target_family = "wasm")]
-                        {
-                            include_str!("../../../certificates/digest.txt").to_string()
-                        }
-                        #[cfg(not(target_family = "wasm"))]
-                        {
-                            include_str!("../../../certificates/digest.txt").to_string()
-                        }
-                    }
-                }
-            };
+            let certificate_digest = env!("CERT_DIGEST").to_string();
             entity_mut.insert(WebTransportClientIo { certificate_digest });
 
             Ok(())

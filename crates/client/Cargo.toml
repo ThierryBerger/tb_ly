@@ -13,6 +13,10 @@ debug = [
     "bevy/bevy_mikktspace",
 ]
 
+
+[build-dependencies]
+dotenvy = "0.15"
+
 [dependencies]
 shared = { path = "../shared" }
 
