@@ -46,13 +46,19 @@ impl ExampleClient {
             ));
 
             let certificate_digest = {
-                #[cfg(target_family = "wasm")]
-                {
-                    include_str!("../../../certificates/digest.txt").to_string()
-                }
-                #[cfg(not(target_family = "wasm"))]
-                {
-                    include_str!("../../../certificates/digest.txt").to_string()
+                const CERT_DIGEST: Option<&'static str> = option_env!("CERT_DIGEST");
+                match CERT_DIGEST {
+                    Some(val) => val.to_string(),
+                    None => {
+                        #[cfg(target_family = "wasm")]
+                        {
+                            include_str!("../../../certificates/digest.txt").to_string()
+                        }
+                        #[cfg(not(target_family = "wasm"))]
+                        {
+                            include_str!("../../../certificates/digest.txt").to_string()
+                        }
+                    }
                 }
             };
             entity_mut.insert(WebTransportClientIo { certificate_digest });
