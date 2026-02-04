@@ -116,9 +116,9 @@ async fn create_client_from_auth_backend(
     secret: String,
 ) -> Option<TokenResponse> {
     #[cfg(feature = "local")]
-    let url = format!("http://{}/create_client", auth_backend_address);
+    let url = format!("{}/create_client", auth_backend_address);
     #[cfg(not(feature = "local"))]
-    let url = format!("https://{}/create_client", auth_backend_address);
+    let url = format!("{}/create_client", auth_backend_address);
     let payload = NewClientPayload {
         client_secret: secret,
     };
