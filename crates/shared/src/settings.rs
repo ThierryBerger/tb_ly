@@ -20,7 +20,7 @@ pub const AUTH_SERVER_ADDR: &str = "0.0.0.0:4100";
 ///
 /// Behind fly.io, the port may not be the internal port.
 #[cfg(not(feature = "local"))]
-pub const AUTH_SERVER_ADDR: &str = "213.188.212.111:4100";
+pub const AUTH_SERVER_ADDR: &str = "213.188.212.111:80";
 
 pub const SHARED_SETTINGS: SharedSettings = SharedSettings { protocol_id: 0 };
 

@@ -3,3 +3,4 @@
 **/digest.txt*
 .env*
 !.env.example
+private.key*

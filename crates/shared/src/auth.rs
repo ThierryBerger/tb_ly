@@ -5,7 +5,7 @@ use bevy::reflect::Reflect;
 use lightyear::netcode::PRIVATE_KEY_BYTES;
 use serde::{Deserialize, Serialize};
 
-// Define a shared port for the authentication backend
+// Define a internal port for the authentication backend
 pub const AUTH_BACKEND_PORT: u16 = 4100;
 
 /// A 32-byte array, used as a key for encrypting and decrypting packets and connect tokens.
