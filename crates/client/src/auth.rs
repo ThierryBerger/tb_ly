@@ -115,7 +115,7 @@ async fn create_client_from_auth_backend(
     auth_backend_address: SocketAddr,
     secret: String,
 ) -> Option<TokenResponse> {
-    let url = format!("http://{}/create_client", auth_backend_address);
+    let url = format!("https://{}/create_client", auth_backend_address);
     let payload = NewClientPayload {
         client_secret: secret,
     };
@@ -144,7 +144,7 @@ async fn connect_existing_client_from_auth_backend(
     client_id: u64,
     secret: String,
 ) -> Option<TokenResponse> {
-    let url = format!("http://{}/connect_client", auth_backend_address);
+    let url = format!("https://{}/connect_client", auth_backend_address);
     let payload = AuthPayload {
         client_id,
         client_secret: secret,

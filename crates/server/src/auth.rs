@@ -240,7 +240,7 @@ fn start_netcode_authentication_task(
                     external: game_server_addr_external,
                 }));
 
-            println!("Auth server listening on http://{}", auth_backend_addr);
+            println!("Auth server listening on https://{}", auth_backend_addr);
             let listener = tokio::net::TcpListener::bind(auth_backend_addr)
                 .await
                 .unwrap();
