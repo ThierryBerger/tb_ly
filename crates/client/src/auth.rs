@@ -20,13 +20,13 @@ use lightyear::prelude::*;
 use crate::AuthPrefs;
 
 pub struct AuthClientPlugin {
-    pub auth_backend_address: SocketAddr,
+    pub auth_backend_address: String,
 }
 
 impl Plugin for AuthClientPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(ConnectTokenRequestTask {
-            auth_backend_addr: self.auth_backend_address,
+            auth_backend_addr: self.auth_backend_address.clone(),
             task: None,
         });
 
@@ -50,7 +50,7 @@ impl Plugin for AuthClientPlugin {
 /// Holds a handle to an io task that is requesting a `ConnectToken` from the backend
 #[derive(Resource)]
 struct ConnectTokenRequestTask {
-    auth_backend_addr: SocketAddr,
+    auth_backend_addr: String,
     task: Option<Task<Option<TokenResponse>>>,
 }
 
@@ -112,7 +112,7 @@ pub struct ClientIdText;
 
 /// Get a ConnectToken via a TCP connection to the authentication server
 async fn create_client_from_auth_backend(
-    auth_backend_address: SocketAddr,
+    auth_backend_address: &String,
     secret: String,
 ) -> Option<TokenResponse> {
     #[cfg(feature = "local")]
@@ -143,14 +143,14 @@ async fn create_client_from_auth_backend(
 }
 
 async fn connect_existing_client_from_auth_backend(
-    auth_backend_address: SocketAddr,
+    auth_backend_address: &str,
     client_id: u64,
     secret: String,
 ) -> Option<TokenResponse> {
     #[cfg(feature = "local")]
-    let url = format!("http://{}/connect_client", auth_backend_address);
+    let url = format!("{}/connect_client", auth_backend_address);
     #[cfg(not(feature = "local"))]
-    let url = format!("https://{}/connect_client", auth_backend_address);
+    let url = format!("{}/connect_client", auth_backend_address);
     let payload = AuthPayload {
         client_id,
         client_secret: secret,
@@ -236,7 +236,7 @@ fn connect_system(
         ClientState::Disconnected => {
             // Check if we have a token saved, if we do, use it, otherwise create a new one.
             info!("Starting task to get ConnectToken");
-            let auth_backend_addr = task_state.auth_backend_addr;
+            let auth_backend_addr = task_state.auth_backend_addr.clone();
 
             let task = if let AuthPrefs {
                 secret: Some(secret),
@@ -248,7 +248,7 @@ fn connect_system(
                 info!("Get a token for a already created client.");
                 IoTaskPool::get().spawn_local(async move {
                     if let Some(response) = connect_existing_client_from_auth_backend(
-                        auth_backend_addr,
+                        &auth_backend_addr,
                         last_token.client_id,
                         // Use the same secret as before.
                         secret.clone(),
@@ -257,7 +257,7 @@ fn connect_system(
                     {
                         return Some(response);
                     }
-                    create_client_from_auth_backend(auth_backend_addr, secret).await
+                    create_client_from_auth_backend(&auth_backend_addr, secret).await
                 })
             } else {
                 info!("Create a new client and get its token.");
@@ -265,7 +265,7 @@ fn connect_system(
                 let secret = "".to_string();
                 prefs.secret = Some(secret.clone());
                 IoTaskPool::get().spawn_local(async move {
-                    create_client_from_auth_backend(auth_backend_addr, secret).await
+                    create_client_from_auth_backend(&auth_backend_addr, secret).await
                 })
             };
             task_state.task = Some(task);
