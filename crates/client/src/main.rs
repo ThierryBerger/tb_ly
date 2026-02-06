@@ -10,7 +10,6 @@
 
 mod auth;
 mod client;
-mod client_renderer;
 mod common_client;
 mod renderer;
 
@@ -24,38 +23,52 @@ use lightyear::link::RecvLinkConditioner;
 use lightyear::prelude::client::InputDelayConfig;
 use lightyear::prelude::*;
 use shared::SharedPlugin;
-use shared::auth::{AUTH_BACKEND_PORT, TokenResponse};
+use shared::auth::TokenResponse;
 use shared::settings::{
-    AUTH_SERVER_ADDR, CLIENT_PORT, FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR, SERVER_PORT,
-    SHARED_SETTINGS,
+    AUTH_SERVER_ADDR, CLIENT_PORT, FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR, SHARED_SETTINGS,
 };
-use std::net::ToSocketAddrs;
 
 use crate::auth::AuthClientPlugin;
 use crate::client::ExampleClientPlugin;
-use crate::client_renderer::ExampleClientRendererPlugin;
-use crate::common_client::{ExampleClient, connect};
+use crate::common_client::ExampleClient;
 
 #[derive(Resource, Reflect, Clone, Default)]
 struct AuthPrefs {
-    pub last_token: Option<TokenResponse>,
-    pub secret: Option<String>,
+    pub accounts: Vec<AuthTokenDef>,
+    pub current: Option<usize>,
+}
+
+impl AuthPrefs {
+    fn get_current_auth(&self) -> Option<&AuthTokenDef> {
+        let current = self.current?;
+        self.accounts.get(current)
+    }
+
+    fn get_current_auth_mut(&mut self) -> Option<&mut AuthTokenDef> {
+        let current = self.current?;
+        self.accounts.get_mut(current)
+    }
+}
+
+/// Represents an identity, isolated to allow storing multiple accounts on a same preference.
+#[derive(Resource, Reflect, Clone, Default)]
+struct AuthTokenDef {
+    pub client_id: Option<u64>,
+    pub last_token: Option<Vec<u8>>,
+    pub secret: String,
 }
 
 #[derive(Reflect, Prefs, Default)]
 struct MyPrefs {
-    pub token: AuthPrefs,
+    pub tokens: AuthPrefs,
 }
 
 /// When running the example as a binary, we only support Client or Server mode.
 fn main() {
     let mut app = new_gui_app();
-    app.add_plugins((
-        lightyear::prelude::client::ClientPlugins {
-            tick_duration: Duration::from_secs_f64(1.0 / FIXED_TIMESTEP_HZ),
-        },
-        ExampleClientRendererPlugin::new(format!("Client")),
-    ));
+    app.add_plugins((lightyear::prelude::client::ClientPlugins {
+        tick_duration: Duration::from_secs_f64(1.0 / FIXED_TIMESTEP_HZ),
+    },));
     app.add_plugins(SharedPlugin);
     app.add_plugins(AuthClientPlugin {
         auth_backend_address: AUTH_SERVER_ADDR.parse().unwrap(),
@@ -63,7 +76,6 @@ fn main() {
     app.add_plugins(PrefsPlugin::<MyPrefs>::default());
     app.world_mut()
         .spawn(ExampleClient {
-            client_id: 0,
             client_port: CLIENT_PORT,
 
             server_addr: GAME_SERVER_ADDR.parse().unwrap(),

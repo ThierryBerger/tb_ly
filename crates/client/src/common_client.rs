@@ -18,7 +18,6 @@ use shared::settings::SharedSettings;
 #[derive(Component, Clone, Debug)]
 #[component(on_add = ExampleClient::on_add)]
 pub struct ExampleClient {
-    pub client_id: u64,
     /// The client port to listen on
     pub client_port: u16,
     /// The socket address of the server
