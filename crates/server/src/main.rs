@@ -22,7 +22,7 @@ use game::GameServerPlugin;
 use lightyear::prelude::server::ServerPlugins;
 use shared::SharedPlugin;
 use shared::auth::AUTH_BACKEND_PORT;
-use shared::settings::{FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR, SERVER_PORT, SHARED_SETTINGS};
+use shared::settings::{FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR, SHARED_SETTINGS};
 use std::net::ToSocketAddrs;
 use tracing::Level;
 

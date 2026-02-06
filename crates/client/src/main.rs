@@ -23,10 +23,7 @@ use lightyear::link::RecvLinkConditioner;
 use lightyear::prelude::client::InputDelayConfig;
 use lightyear::prelude::*;
 use shared::SharedPlugin;
-use shared::auth::TokenResponse;
-use shared::settings::{
-    AUTH_SERVER_ADDR, CLIENT_PORT, FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR, SHARED_SETTINGS,
-};
+use shared::settings::{AUTH_SERVER_ADDR, CLIENT_PORT, FIXED_TIMESTEP_HZ, GAME_SERVER_ADDR};
 
 use crate::auth::AuthClientPlugin;
 use crate::client::ExampleClientPlugin;
@@ -84,7 +81,6 @@ fn main() {
                 incoming_jitter: Duration::from_secs_f32(0.1),
                 incoming_loss: 0.02,
             })),
-            shared: SHARED_SETTINGS,
         })
         .insert(
             InputTimelineConfig::default().with_input_delay(InputDelayConfig::fixed_input_delay(3)),

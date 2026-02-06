@@ -1,4 +1,3 @@
-use core::net::{IpAddr, Ipv4Addr, SocketAddr};
 use core::time::Duration;
 
 pub const FIXED_TIMESTEP_HZ: f64 = 64.0;

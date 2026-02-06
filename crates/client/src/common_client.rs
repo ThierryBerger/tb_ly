@@ -12,7 +12,6 @@ use lightyear::netcode::{ConnectToken, NetcodeClient};
 use lightyear::prelude::client::*;
 use lightyear::prelude::*;
 use serde::{Deserialize, Serialize};
-use shared::settings::SharedSettings;
 
 /// Event that examples can trigger to spawn a client.
 #[derive(Component, Clone, Debug)]
@@ -24,7 +23,6 @@ pub struct ExampleClient {
     pub server_addr: SocketAddr,
     /// Possibly add a conditioner to simulate network conditions
     pub conditioner: Option<RecvLinkConditioner>,
-    pub shared: SharedSettings,
 }
 
 impl ExampleClient {
@@ -50,10 +48,4 @@ impl ExampleClient {
             Ok(())
         });
     }
-}
-
-pub(crate) fn connect(mut commands: Commands, client: Single<Entity, With<Client>>) {
-    commands.trigger(Connect {
-        entity: client.into_inner(),
-    });
 }

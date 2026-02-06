@@ -1,5 +1,4 @@
 //! This module contains the shared code between the client and the server for the auth example.
-use core::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 
 use bevy::reflect::Reflect;
 use lightyear::netcode::PRIVATE_KEY_BYTES;

@@ -11,12 +11,11 @@ use alloc::sync::Arc;
 use async_compat::Compat;
 use axum::http::{Method, StatusCode};
 use axum::response::{IntoResponse, Response};
-use axum::routing::{get, post};
+use axum::routing::post;
 use axum::{Json, Router};
 use core::net::SocketAddr;
 use lightyear::connection::client::Disconnecting;
 use rand::RngCore;
-use serde::{Deserialize, Serialize};
 use serde_json::json;
 use shared::auth::{AuthPayload, Key, NewClientPayload, TokenResponse};
 use std::sync::{LazyLock, RwLock};
@@ -115,17 +114,17 @@ fn handle_connect_event(
 #[derive(Debug)]
 pub enum AuthError {
     WrongCredentials,
-    MissingCredentials,
+    // MissingCredentials,
     TokenCreation,
-    InvalidToken,
+    // InvalidToken,
 }
 impl IntoResponse for AuthError {
     fn into_response(self) -> Response {
         let (status, error_message) = match self {
             AuthError::WrongCredentials => (StatusCode::UNAUTHORIZED, "Wrong credentials"),
-            AuthError::MissingCredentials => (StatusCode::BAD_REQUEST, "Missing credentials"),
+            //AuthError::MissingCredentials => (StatusCode::BAD_REQUEST, "Missing credentials"),
             AuthError::TokenCreation => (StatusCode::INTERNAL_SERVER_ERROR, "Token creation error"),
-            AuthError::InvalidToken => (StatusCode::BAD_REQUEST, "Invalid token"),
+            //AuthError::InvalidToken => (StatusCode::BAD_REQUEST, "Invalid token"),
         };
         let body = Json(json!({
             "error": error_message,

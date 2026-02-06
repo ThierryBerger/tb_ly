@@ -226,6 +226,7 @@ pub fn create_map_from_string(mut commands: Commands) {
     }
 }
 
+#[expect(clippy::too_many_arguments)]
 fn spawn_wall(
     commands: &mut Commands,
     x1: usize,
@@ -242,6 +243,6 @@ fn spawn_wall(
     commands.spawn(WallBundle::new(start, end, Color::WHITE));
 }
 
-pub fn create_map_3(mut commands: Commands) {
+pub fn create_map_3(commands: Commands) {
     create_map_from_string(commands);
 }

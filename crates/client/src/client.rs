@@ -31,16 +31,14 @@ pub(crate) fn movement(
     mut position_query: Query<(&mut LinearVelocity, &ActionState<PlayerActions>), With<Predicted>>,
 ) {
     for (velocity, action_state) in position_query.iter_mut() {
-        //if !action_state.get_pressed().is_empty() {
-        &action_state;
         shared_movement_behaviour(velocity, action_state);
-        //}
     }
 }
 
 /// When the predicted copy of the client-owned entity is spawned, do stuff
 /// - assign it a different saturation
 /// - keep track of it in the Global resource
+#[expect(clippy::type_complexity)]
 pub(crate) fn handle_predicted_spawn(
     trigger: On<Add, (PlayerId, Predicted)>,
     mut predicted: Query<(&mut ColorComponent, Has<Controlled>), (With<Predicted>, With<PlayerId>)>,

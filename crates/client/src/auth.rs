@@ -3,9 +3,7 @@
 //! - connecting to the server at Startup
 //! - sending inputs to the server
 //! - applying inputs to the locally predicted player (for prediction to work, inputs have to be applied to both the
-//! predicted entity and the server entity)
-use core::net::SocketAddr;
-use serde_json::json;
+//!   predicted entity and the server entity)
 use shared::auth::{AuthPayload, NewClientPayload, TokenResponse};
 use std::pin::pin;
 use std::task::Poll;
@@ -76,7 +74,7 @@ struct ConnectTokenRequestTask {
 fn fetch_connect_token(
     mut connect_token_request: ResMut<ConnectTokenRequestTask>,
     client: Single<Entity, With<Client>>,
-    mut commands: Commands,
+    commands: Commands,
     mut prefs: ResMut<AuthPrefs>,
 ) -> Result {
     if let Some(task) = &mut connect_token_request.task {
@@ -118,7 +116,7 @@ fn fetch_connect_token(
 }
 
 fn start_lightyear_connect(
-    mut commands: Commands<'_, '_>,
+    mut commands: Commands,
     client: Entity,
     token_response: &TokenResponse,
 ) -> Result<(), BevyError> {
@@ -194,13 +192,12 @@ async fn connect_existing_client_from_auth_backend(
         response,
         response.bytes.len()
     );
-    let token_response = serde_json::from_slice::<TokenResponse>(&response.bytes).ok();
-    token_response
+    serde_json::from_slice::<TokenResponse>(&response.bytes).ok()
 }
 
 /// Remove all entities when the client disconnect
 fn on_disconnect(
-    trigger: On<Insert, Disconnected>,
+    _trigger: On<Insert, Disconnected>,
     mut commands: Commands,
     debug_text: Query<Entity, With<ClientIdText>>,
 ) {
@@ -252,7 +249,7 @@ pub(crate) fn spawn_connect_button(mut commands: Commands) {
                     IdentityButton,
                 ))
                 .observe(
-                    |trigger: On<Pointer<Click>>, mut prefs: ResMut<AuthPrefs>| {
+                    |_trigger: On<Pointer<Click>>, mut prefs: ResMut<AuthPrefs>| {
                         prefs.current = prefs.current.map_or(Some(1), |c| Some((c + 1) % 5));
                     },
                 );
@@ -288,7 +285,7 @@ pub(crate) fn spawn_connect_button(mut commands: Commands) {
                     Button,
                     ClientButton,
                 ))
-                .observe(|trigger: On<Pointer<Click>>, mut commands: Commands| {
+                .observe(|_trigger: On<Pointer<Click>>, mut commands: Commands| {
                     commands.run_system_cached(connect_system);
                 });
         });
@@ -395,6 +392,7 @@ pub struct ClientIdText;
 
 /// Listen for events to know when the client is connected, and spawn a text entity
 /// to display the client id
+#[expect(clippy::type_complexity)]
 pub(crate) fn handle_connection(
     trigger: On<Add, Connected>,
     query: Query<&LocalId, Or<((With<LinkOf>, With<Client>), Without<LinkOf>)>>,

@@ -1,7 +1,6 @@
 pub mod physics;
 
 use avian2d::prelude::*;
-use bevy::math::Vec2;
 use bevy::prelude::*;
 use leafwing_input_manager::Actionlike;
 use lightyear::input::config::InputConfig;

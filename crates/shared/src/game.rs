@@ -3,7 +3,7 @@ pub mod map;
 use avian2d::{
     PhysicsPlugins,
     prelude::{
-        Collider, ColliderDensity, Gravity, Mass, MassPropertiesBundle, PhysicsInterpolationPlugin,
+        Collider, ColliderDensity, Gravity, MassPropertiesBundle, PhysicsInterpolationPlugin,
         PhysicsTransformPlugin, Restitution, RigidBody,
     },
 };

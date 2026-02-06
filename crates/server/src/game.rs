@@ -122,6 +122,7 @@ pub(crate) fn init(mut commands: Commands) {
 
 /// Here we perform more "immediate" interest management: we will make a circle visible to a client
 /// depending on the distance to the client's entity
+#[expect(clippy::type_complexity)]
 pub(crate) fn interest_management(
     peer_metadata: Res<PeerMetadata>,
     player_query: Query<(&PlayerId, Ref<Position>), (Without<CircleMarker>, With<Replicate>)>,

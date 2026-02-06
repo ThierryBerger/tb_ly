@@ -4,11 +4,11 @@ pub mod protocol;
 pub mod settings;
 
 use avian2d::prelude::LinearVelocity;
-use bevy::{math::VectorSpace, prelude::*};
+use bevy::prelude::*;
 use leafwing_input_manager::prelude::ActionState;
 use lightyear::prelude::*;
 
-use crate::{protocol::*, settings::FIXED_TIMESTEP_HZ};
+use crate::protocol::*;
 
 #[derive(Clone)]
 pub struct SharedPlugin;
